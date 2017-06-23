@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-
-    <script async custom-element="amp-youtube" src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"></script>
     <script async custom-element="amp-live-list" src="https://cdn.ampproject.org/v0/amp-live-list-0.1.js"></script>
 
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
@@ -41,6 +39,8 @@
       }
       .post {
         margin-top: 20px;
+        color: black;
+        background: yellow;
       }
       #live-list-update-button {
         position: fixed;
@@ -69,7 +69,7 @@
       <h1>AMP Live Video Blog</h1>
     </div>
 
-    <amp-live-list 
+    <amp-live-list
         id="amp-live-list-videos"
         data-poll-interval="10000"
         data-max-items-per-page="<%= pageSize %>"
@@ -79,18 +79,15 @@
     <button id ="live-list-update-button" update on="tap:amp-live-list-videos.update" >You have updates</button>
 
     <div items>
-
       <% posts.forEach((post) => { %>
-
-      <div class="post" id="<%= post.id %>" data-sort-time="<%= post.timestamp %>">
-        <amp-youtube
-          width="480"
-          height="270"
-          layout="responsive"
-          data-videoid="<%= post.videoID %>"
-        />
+      <div class="post" id="<%= post.id %>"
+          data-sort-time="<%= post.timestamp %>"
+      >
+          <div>
+              <%= post.timestamp %> +++ <%= post.id %> +++ then content id: <%= post.contentID %>
+              <%= post.id === post.contentID ? ' been updated' : ' original content' %>
+          </div>
       </div>
-
       <% }) %>
     </div>
 
@@ -99,7 +96,7 @@
 
         <% if (pageCount > 1) { %>
         <ul class="pagination">
-          
+
           <% for (var i = 1; i <= pageCount; i++) { %>
             <% if (currentPage == i) { %>
               <li><%= i %></li>
@@ -107,13 +104,13 @@
               <li><a href="/?page=<%= i %>"><%= i %></a></li>
             <% } %>
           <% } %>
-        
+
         </ul>
-        <% } %>  
+        <% } %>
       </nav>
     </div>
 
   </amp-live-list>
-  
+
   </body>
 </html>
