@@ -43,7 +43,7 @@ app.get('/new', (req, res) => {
   const post = {
 	  id: posts.length + 1,
 	  contentID: posts.length + 1,
-	  timestamp: parseInt(moment().unix()) + 100,
+	  timestamp: moment().unix(),
 	  timestampStr: moment().format(),
   };
   console.log('\n........new........\n',posts.length,'\n...................\n');
@@ -58,9 +58,7 @@ app.get('/new', (req, res) => {
 app.get('/delete', (req, res) => {
 
   let i = Math.floor(Math.random() * posts.length);
-  let j = Math.floor(Math.random() * posts.length) - i -1;
-  posts.splice(i, j);
-  console.log(i, j, '\n........delete........\n',posts.length,'\n...................\n');
+  posts[i].delete = true;
 
   res.status(200).json(posts);
 });
@@ -68,10 +66,11 @@ app.get('/delete', (req, res) => {
 
 // endpoint to update a original post
 app.get('/update', (req, res) => {
-  let i = Math.floor(Math.random() * posts.length);
-  posts[i].contentID++ ;
-  console.log('\n........update........\n',posts[i],'\n...................\n');
-  res.status(200).json(posts);
+    let i = Math.floor(Math.random() * posts.length);
+    posts[i].contentID++;
+    posts[i].updateTimestamp = moment().unix();
+    console.log('\n........update........\n',posts[i],'\n...................\n');
+    res.status(200).json(posts);
 });
 
 app.listen(3000, () => {

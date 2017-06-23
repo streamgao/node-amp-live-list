@@ -2,16 +2,15 @@
 <html amp lang="en">
   <head>
     <meta charset="utf-8">
-    <script async src="https://cdn.ampproject.org/v0.js"></script>
     <title>AMP Live Video Blog</title>
-    <link rel="canonical" href="http://localhost:3000/" />
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="canonical" href="http://localhost:3000/" />
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
     <script async custom-element="amp-live-list" src="https://cdn.ampproject.org/v0/amp-live-list-0.1.js"></script>
 
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
-
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <style amp-custom>
       body {
         font-family: 'Roboto', sans-serif;
@@ -80,12 +79,18 @@
 
     <div items>
       <% posts.forEach((post) => { %>
-      <div class="post" id="<%= post.id %>"
+      <div class="post" id="<%= 'idis' + post.id %>"
           data-sort-time="<%= post.timestamp %>"
+          <% if (post.contentID !== post.id && post.updateTimestamp) { %>
+            data-update-time="<%= post.updateTimestamp %>"
+          <% } %>
+          <% if (post.delete) { %>
+            data-tombstone=""
+          <% } %>
       >
           <div>
               <%= post.timestamp %> +++ <%= post.id %> +++ then content id: <%= post.contentID %>
-              <%= post.id === post.contentID ? ' been updated' : ' original content' %>
+              <%= post.id !== post.contentID ? ' been updated' : ' original content' %>
           </div>
       </div>
       <% }) %>
@@ -93,10 +98,8 @@
 
     <div pagination>
       <nav aria-label="amp live list pagination">
-
         <% if (pageCount > 1) { %>
         <ul class="pagination">
-
           <% for (var i = 1; i <= pageCount; i++) { %>
             <% if (currentPage == i) { %>
               <li><%= i %></li>
@@ -104,7 +107,6 @@
               <li><a href="/?page=<%= i %>"><%= i %></a></li>
             <% } %>
           <% } %>
-
         </ul>
         <% } %>
       </nav>
